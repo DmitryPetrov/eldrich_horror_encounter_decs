@@ -6,9 +6,9 @@ public enum CardType {
     ASIA (false),
     GENERAL(false),
     GATE (false),
-    //RESEARCH (false),
     EXPEDITION (true),
     //SPECIAL (false),
+    RESEARCH (true),
     MYTHOS (true),
     MYSTERY(true);
 

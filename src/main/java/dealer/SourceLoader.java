@@ -2,6 +2,7 @@ package main.java.dealer;
 
 import main.java.horror.Card;
 import main.java.horror.CardType;
+import main.java.horror.ancient.AncientName;
 import main.java.horror.expedition.ExpeditionLocation;
 
 import java.util.Map;
@@ -14,4 +15,6 @@ public interface SourceLoader {
     Map<CardType, Card> getCardShirts();
 
     Map<ExpeditionLocation, Card> getCardExpeditionShirts();
+
+    Map<String, byte[]> getAncientCards(AncientName name);
 }

@@ -1,5 +1,6 @@
 package main.java.horror.ancient;
 
+import main.java.horror.Deck;
 import main.java.horror.myth.MythosColor;
 import main.java.horror.myth.MythosCard;
 
@@ -11,36 +12,17 @@ import java.util.stream.Collectors;
 
 public abstract class AncientOne {
 
-    private final int TOP_GREEN_COUNT;
-    private final int TOP_YELLOW_COUNT;
-    private final int TOP_BLUE_COUNT;
-    private final int MID_GREEN_COUNT;
-    private final int MID_YELLOW_COUNT;
-    private final int MID_BLUE_COUNT;
-    private final int BOTTOM_GREEN_COUNT;
-    private final int BOTTOM_YELLOW_COUNT;
-    private final int BOTTOM_BLUE_COUNT;
+    protected int TOP_GREEN_COUNT;
+    protected int TOP_YELLOW_COUNT;
+    protected int TOP_BLUE_COUNT;
+    protected int MID_GREEN_COUNT;
+    protected int MID_YELLOW_COUNT;
+    protected int MID_BLUE_COUNT;
+    protected int BOTTOM_GREEN_COUNT;
+    protected int BOTTOM_YELLOW_COUNT;
+    protected int BOTTOM_BLUE_COUNT;
 
-    public AncientOne(
-            int TOP_GREEN_COUNT,
-            int TOP_YELLOW_COUNT,
-            int TOP_BLUE_COUNT,
-            int MID_GREEN_COUNT,
-            int MID_YELLOW_COUNT,
-            int MID_BLUE_COUNT,
-            int BOTTOM_GREEN_COUNT,
-            int BOTTOM_YELLOW_COUNT,
-            int BOTTOM_BLUE_COUNT
-    ) {
-        this.TOP_GREEN_COUNT = TOP_GREEN_COUNT;
-        this.TOP_YELLOW_COUNT = TOP_YELLOW_COUNT;
-        this.TOP_BLUE_COUNT = TOP_BLUE_COUNT;
-        this.MID_GREEN_COUNT = MID_GREEN_COUNT;
-        this.MID_YELLOW_COUNT = MID_YELLOW_COUNT;
-        this.MID_BLUE_COUNT = MID_BLUE_COUNT;
-        this.BOTTOM_GREEN_COUNT = BOTTOM_GREEN_COUNT;
-        this.BOTTOM_YELLOW_COUNT = BOTTOM_YELLOW_COUNT;
-        this.BOTTOM_BLUE_COUNT = BOTTOM_BLUE_COUNT;
+    public AncientOne() {
     }
 
     public Stack<MythosCard> buildMythDeck(List<MythosCard> cards) {
@@ -96,4 +78,12 @@ public abstract class AncientOne {
     public abstract boolean inFirstPhase();
 
     public abstract void lose();
+
+    abstract byte[] getFace();
+
+    public abstract byte[] getBack();
+
+    public abstract Deck getResearchDeck();
+
+    public abstract Deck getMysteryDeck();
 }

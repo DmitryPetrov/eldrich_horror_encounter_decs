@@ -1,7 +1,10 @@
 package main.java.horror;
 
 import main.java.dealer.SourceLoader;
+import main.java.horror.ancient.AncientName;
 import main.java.horror.ancient.AncientOne;
+import main.java.horror.ancient.MysteryDeck;
+import main.java.horror.ancient.OuterSpace;
 import main.java.horror.expedition.ExpeditionDeck;
 import main.java.horror.expedition.ExpeditionLocation;
 import main.java.horror.myth.MythosCard;
@@ -15,15 +18,13 @@ public class Table {
 
     private Map<CardType, Deck> decks = new HashMap<>();
 
-    public final Map<CardType, Card> cardShirts;
-    public final Map<ExpeditionLocation, Card> expeditionCardShirts;
-
     private final AncientOne ancient;
     private final MythosDeck myths;
-    //private final MysteryDeck mysteries;
 
-    public Table(AncientOne ancient, SourceLoader dealer, boolean easyMod) {
-        this.ancient = ancient;
+    public Table(AncientName name, SourceLoader dealer, boolean easyMod) {
+        this.ancient = OuterSpace.callTheAncientOne(name, dealer);
+        decks.put(CardType.RESEARCH, ancient.getResearchDeck());
+        decks.put(CardType.MYSTERY, ancient.getMysteryDeck());
         for (CardType cardType: CardType.values()) {
             if (cardType.special) {
                 continue;
@@ -32,9 +33,6 @@ public class Table {
         }
         decks.put(CardType.EXPEDITION, new ExpeditionDeck(dealer));
         myths = new MythosDeck(dealer, ancient, easyMod);
-        //mysteries = new MysteryDeck(getCards(CardType.MYSTERY), ancient);
-        cardShirts = dealer.getCardShirts();
-        expeditionCardShirts = dealer.getCardExpeditionShirts();
     }
 
 
@@ -52,5 +50,9 @@ public class Table {
 
     public List<Card> showMythosDeck() {
         return myths.showDeck();
+    }
+
+    public Card getCardShirts(CardType type) {
+        return decks.get(type).getShirt();
     }
 }

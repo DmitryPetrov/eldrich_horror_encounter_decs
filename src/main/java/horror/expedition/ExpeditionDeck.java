@@ -7,14 +7,22 @@ import main.java.horror.Deck;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class ExpeditionDeck extends Deck {
 
     public List<Card> box;
+    public final Map<ExpeditionLocation, Card> shirts;
 
     public ExpeditionDeck(SourceLoader dealer) {
-        super(CardType.EXPEDITION, dealer);
+        this.discardedCards = new Stack<>();
+        this.cards = new Stack<>();
+        this.cards.addAll(dealer.getCards(CardType.EXPEDITION));
+        reshuffle();
+        this.shirts = dealer.getCardExpeditionShirts();
+        this.shirt = shirts.get(((ExpeditionCard) this.cards.peek()).location);
     }
 
     public void moveToBox(ExpeditionLocation excluded) {
@@ -38,10 +46,10 @@ public class ExpeditionDeck extends Deck {
         return allCards;
     }
 
-    public ExpeditionLocation showNextCardLocation() {
+    public ExpeditionCard showNextCardLocation() {
         if (cards.empty()) {
             this.reshuffle();
         }
-        return ((ExpeditionCard) cards.peek()).location;
+        return (ExpeditionCard) shirts.get(((ExpeditionCard) cards.peek()).location);
     }
 }

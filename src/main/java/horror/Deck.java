@@ -2,15 +2,13 @@ package main.java.horror;
 
 import main.java.dealer.SourceLoader;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Deck {
 
     protected Stack<Card> cards;
     protected Stack<Card> discardedCards;
+    protected Card shirt;
 
     protected Deck() {}
 
@@ -19,6 +17,15 @@ public class Deck {
         this.cards = new Stack<>();
         this.cards.addAll(dealer.getCards(cardType));
         reshuffle();
+        this.shirt = dealer.getCardShirts().get(cardType);
+    }
+
+    public Deck(Set<Card> cards, byte[] shirt) {
+        this.discardedCards = new Stack<>();
+        this.cards = new Stack<>();
+        this.cards.addAll(cards);
+        reshuffle();
+        this.shirt = new Card(UUID.randomUUID(), this.cards.peek().type, shirt);
     }
 
     public Card get() {
@@ -53,5 +60,9 @@ public class Deck {
         allCards.addAll(cards);
         allCards.addAll(discardedCards);
         return allCards;
+    }
+
+    public Card getShirt() {
+        return shirt;
     }
 }

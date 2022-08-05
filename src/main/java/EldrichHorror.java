@@ -15,6 +15,7 @@ import main.java.dealer.FileSystemSourceLoader;
 import main.java.horror.CardType;
 import main.java.horror.GameBase;
 import main.java.horror.Table;
+import main.java.horror.ancient.AncientName;
 import main.java.horror.ancient.AncientOne;
 import main.java.horror.ancient.Azathoth;
 import main.java.horror.expedition.ExpeditionDeck;
@@ -29,8 +30,8 @@ public class EldrichHorror extends Application {
 
     public EldrichHorror() {
         FileSystemSourceLoader sourceLoader = new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE));
-        AncientOne azathoth = new Azathoth();
-        table = new Table(azathoth, sourceLoader, false);
+
+        table = new Table(AncientName.AZATHOTH, sourceLoader, false);
     }
 
 
@@ -71,9 +72,7 @@ public class EldrichHorror extends Application {
     Button buildExpeditionButton(ImageView cardFrontPlace) {
         ExpeditionDeck expeditionDeck = table.getExpeditionDeck();
 
-        Image cardShirtImage = new Image(new ByteArrayInputStream(
-                table.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
-        ));
+        Image cardShirtImage = new Image(new ByteArrayInputStream(expeditionDeck.showNextCardLocation().content));
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(100);
         cardShirt.setFitHeight(150);
@@ -87,10 +86,7 @@ public class EldrichHorror extends Application {
                 cardFrontPlace.setImage(cardFront);
                 cardFrontPlace.setFitWidth(500);
                 cardFrontPlace.setFitHeight(730);
-                cardShirt.setImage(
-                        new Image(new ByteArrayInputStream(
-                                table.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
-                )));
+                cardShirt.setImage(new Image(new ByteArrayInputStream(expeditionDeck.showNextCardLocation().content)));
             }
         };
         mythosButton.setOnAction(event);
@@ -98,7 +94,7 @@ public class EldrichHorror extends Application {
     }
 
     Button buildContactButtons(CardType type, ImageView cardFrontPlace) {
-        Image cardShirtImage = new Image(new ByteArrayInputStream(table.cardShirts.get(type).content));
+        Image cardShirtImage = new Image(new ByteArrayInputStream(table.getCardShirts(type).content));
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(100);
         cardShirt.setFitHeight(150);
@@ -132,7 +128,7 @@ public class EldrichHorror extends Application {
 
 
     Button buildMythButton(ImageView cardFront) {
-        Image cardShirtImage = new Image(new ByteArrayInputStream(table.cardShirts.get(CardType.MYTHOS).content));
+        Image cardShirtImage = new Image(new ByteArrayInputStream(table.getCardShirts(CardType.MYTHOS).content));
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(100);
         cardShirt.setFitHeight(150);

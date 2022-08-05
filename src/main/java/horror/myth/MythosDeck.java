@@ -17,7 +17,7 @@ public class MythosDeck extends Deck {
     private AncientOne elder;
     private List<MythosCard> inGame = new ArrayList<>();
 
-    public MythosDeck(SourceLoader dealer, AncientOne elder, boolean easyMod) {
+    public MythosDeck(SourceLoader dealer, AncientOne ancientOne, boolean easyMod) {
         List<MythosCard> mythCards = dealer.getCards(CardType.MYTHOS)
                 .stream()
                 .map(card -> (MythosCard) card)
@@ -28,9 +28,9 @@ public class MythosDeck extends Deck {
                     .filter(mythCard -> !mythCard.complexity.equals(Complexity.HARD))
                     .collect(Collectors.toList());
         }
-        this.cards = (Stack) elder.buildMythDeck(mythCards);
+        this.cards = (Stack) ancientOne.buildMythDeck(mythCards);
         this.discardedCards = new Stack<>();
-        this.elder = elder;
+        this.elder = ancientOne;
     }
 
     public Card get() {
