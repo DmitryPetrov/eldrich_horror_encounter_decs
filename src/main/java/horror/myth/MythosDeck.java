@@ -31,6 +31,7 @@ public class MythosDeck extends Deck {
         this.cards = (Stack) ancientOne.buildMythDeck(mythCards);
         this.discardedCards = new Stack<>();
         this.elder = ancientOne;
+        this.shirt = dealer.getCardShirts().get(CardType.MYTHOS);
     }
 
     public Card get() {

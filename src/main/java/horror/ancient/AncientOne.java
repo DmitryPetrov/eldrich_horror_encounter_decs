@@ -79,7 +79,7 @@ public abstract class AncientOne {
 
     public abstract void lose();
 
-    abstract byte[] getFace();
+    public abstract byte[] getFace();
 
     public abstract byte[] getBack();
 

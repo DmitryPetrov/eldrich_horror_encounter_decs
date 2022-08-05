@@ -37,6 +37,7 @@ public class Azathoth extends AncientOne {
         for (String fileName: ancientCards.keySet().stream().filter(name -> name.contains("research")).collect(Collectors.toSet())) {
             if (fileName.contains("back")) {
                 researchShirt = ancientCards.get(fileName);
+                continue;
             }
             researchCards.add(new Card(UUID.randomUUID(), CardType.RESEARCH, ancientCards.get(fileName)));
         }
@@ -47,10 +48,11 @@ public class Azathoth extends AncientOne {
         for (String fileName: ancientCards.keySet().stream().filter(name -> name.contains("mystery")).collect(Collectors.toSet())) {
             if (fileName.contains("back")) {
                 mysteryShirt = ancientCards.get(fileName);
+                continue;
             }
             mysteryCards.add(new Card(UUID.randomUUID(), CardType.RESEARCH, ancientCards.get(fileName)));
         }
-        mysteryDeck = new Deck(researchCards, mysteryShirt);
+        mysteryDeck = new Deck(mysteryCards, mysteryShirt);
 
         face = ancientCards.get("ancient.jpg");
         back = ancientCards.get("ancient_back.jpg");

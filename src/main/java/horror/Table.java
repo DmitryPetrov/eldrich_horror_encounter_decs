@@ -48,11 +48,15 @@ public class Table {
         return (MythosCard) myths.get();
     }
 
-    public List<Card> showMythosDeck() {
-        return myths.showDeck();
+    public MythosDeck getMythosDeck() {
+        return myths;
     }
 
     public Card getCardShirts(CardType type) {
         return decks.get(type).getShirt();
+    }
+
+    public AncientOne getAncient() {
+        return ancient;
     }
 }
