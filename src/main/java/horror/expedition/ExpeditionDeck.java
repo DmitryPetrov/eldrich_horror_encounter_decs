@@ -37,6 +37,9 @@ public class ExpeditionDeck extends Deck {
     }
 
     public ExpeditionLocation showNextCardLocation() {
+        if (cards.empty()) {
+            this.reshuffle();
+        }
         return ((ExpeditionCard) cards.peek()).location;
     }
 }

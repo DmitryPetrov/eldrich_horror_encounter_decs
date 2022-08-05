@@ -1,7 +1,7 @@
 package main.java.horror.myth;
 
 public enum Complexity {
-    LIGHT,
+    EASY,
     MID,
     HARD
 }

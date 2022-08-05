@@ -28,7 +28,7 @@ public class Deck {
         return top;
     }
 
-    private void reshuffle() {
+    protected void reshuffle() {
         List<Card> allCards = new ArrayList<>(cards.size() + discardedCards.size());
         allCards.addAll(cards);
         allCards.addAll(discardedCards);

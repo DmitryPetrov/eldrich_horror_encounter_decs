@@ -48,6 +48,7 @@ public class EldrichHorror extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         //buildMythDeck(primaryStage);
+        //new ScanCards().scan();
         buildContactsDeck(primaryStage);
     }
 
@@ -72,8 +73,8 @@ public class EldrichHorror extends Application {
         lines.getChildren().addAll(buttonRow, cardRow);
 
         primaryStage.setTitle("Древний Ужас");
-        primaryStage.setWidth(1500);
-        primaryStage.setHeight(900);
+        primaryStage.setWidth(1920);
+        primaryStage.setHeight(1080);
         primaryStage.setScene(new Scene(lines));
         primaryStage.show();
     }
@@ -89,14 +90,14 @@ public class EldrichHorror extends Application {
         cardShirt.setFitHeight(150);
         Button mythosButton = new Button("", cardShirt);
         cardFrontPlace.setImage(cardShirtImage);
-        cardFrontPlace.setFitWidth(300);
-        cardFrontPlace.setFitHeight(500);
+        cardFrontPlace.setFitWidth(500);
+        cardFrontPlace.setFitHeight(730);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 Image cardFront = new Image(new ByteArrayInputStream(table.getCard(CardType.EXPEDITION).content));
                 cardFrontPlace.setImage(cardFront);
-                cardFrontPlace.setFitWidth(300);
-                cardFrontPlace.setFitHeight(500);
+                cardFrontPlace.setFitWidth(500);
+                cardFrontPlace.setFitHeight(730);
                 cardShirt.setImage(
                         new Image(new ByteArrayInputStream(
                                 gameBuilder.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
@@ -114,13 +115,13 @@ public class EldrichHorror extends Application {
         cardShirt.setFitHeight(150);
         Button mythosButton = new Button("", cardShirt);
         cardFrontPlace.setImage(cardShirtImage);
-        cardFrontPlace.setFitWidth(300);
-        cardFrontPlace.setFitHeight(500);
+        cardFrontPlace.setFitWidth(500);
+        cardFrontPlace.setFitHeight(730);
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 cardFrontPlace.setImage(new Image(new ByteArrayInputStream(table.getCard(type).content)));
-                cardFrontPlace.setFitWidth(300);
-                cardFrontPlace.setFitHeight(500);
+                cardFrontPlace.setFitWidth(500);
+                cardFrontPlace.setFitHeight(730);
             }
         };
         mythosButton.setOnAction(event);

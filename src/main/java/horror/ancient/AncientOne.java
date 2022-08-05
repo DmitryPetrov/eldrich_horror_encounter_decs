@@ -1,6 +1,6 @@
 package main.java.horror.ancient;
 
-import main.java.horror.myth.Color;
+import main.java.horror.myth.MythosColor;
 import main.java.horror.myth.MythosCard;
 
 import java.util.ArrayList;
@@ -44,9 +44,9 @@ public abstract class AncientOne {
     }
 
     public Stack<MythosCard> buildMythDeck(List<MythosCard> cards) {
-        Stack<MythosCard> greenCards = extractAndShuffle(cards, Color.GREEN);
-        Stack<MythosCard> yellowCards = extractAndShuffle(cards, Color.YELLOW);
-        Stack<MythosCard> blueCards = extractAndShuffle(cards, Color.BLUE);
+        Stack<MythosCard> greenCards = extractAndShuffle(cards, MythosColor.GREEN);
+        Stack<MythosCard> yellowCards = extractAndShuffle(cards, MythosColor.YELLOW);
+        Stack<MythosCard> blueCards = extractAndShuffle(cards, MythosColor.BLUE);
 
         List<MythosCard> bottomLayer = new ArrayList<>();
         moveCards(greenCards, bottomLayer, BOTTOM_GREEN_COUNT);
@@ -80,10 +80,10 @@ public abstract class AncientOne {
         }
     }
 
-    private Stack<MythosCard> extractAndShuffle(List<MythosCard> cards, Color color) {
+    private Stack<MythosCard> extractAndShuffle(List<MythosCard> cards, MythosColor mythosColor) {
         List<MythosCard> filtred = cards
                 .stream()
-                .filter(mythosCard -> mythosCard.color.equals(color))
+                .filter(mythosCard -> mythosCard.mythosColor.equals(mythosColor))
                 .collect(Collectors.toList());
         Collections.shuffle(filtred);
         Stack<MythosCard> mythosCards = new Stack<>();

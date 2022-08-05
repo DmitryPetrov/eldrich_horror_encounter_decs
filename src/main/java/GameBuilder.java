@@ -4,13 +4,12 @@ import main.java.horror.Card;
 import main.java.horror.CardType;
 import main.java.horror.expedition.ExpeditionCard;
 import main.java.horror.expedition.ExpeditionLocation;
-import main.java.horror.myth.Color;
+import main.java.horror.myth.MythosColor;
 import main.java.horror.myth.Complexity;
 import main.java.horror.myth.MythosCard;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +25,7 @@ public class GameBuilder {
     private final String COMPONENTS_PATH = "./components";
 
     public GameBuilder() {
-        contactPaths = List.of("america", "asia", "europe", "expedition", "general", "myths");
+        contactPaths = List.of("america", "asia", "europe", "expedition", "general", "mythos");
         cardShirts = new HashMap<>();
         expeditionCardShirts = new HashMap<>();
     }
@@ -51,7 +50,7 @@ public class GameBuilder {
 
             File[] cardTypes = cardsDir.listFiles();
             for (File cardTypeDir: cardTypes) {
-                if (cardTypeDir.getName().equals("myths")) {
+                if (cardTypeDir.getName().equals("mythos")) {
                     cards.addAll(readMythCards(cardTypeDir));
                 }
                 if (cardTypeDir.getName().equals("america")) {
@@ -91,16 +90,16 @@ public class GameBuilder {
             location = ExpeditionLocation.THE_AMAZON;
         } else if (file.getName().contains("an")) {
             location = ExpeditionLocation.ANTARCTICA;
-        } else if (file.getName().contains("gm")) {
+        } else if (file.getName().contains("hm")) {
             location = ExpeditionLocation.THE_HIMALAYAS;
-        } else if (file.getName().contains("ha")) {
+        } else if (file.getName().contains("hoa")) {
             location = ExpeditionLocation.THE_HEARTH_OF_AFRICA;
         } else if (file.getName().contains("pr")) {
             location = ExpeditionLocation.THE_PYRAMIDS;
         } else if (file.getName().contains("tg")) {
             location = ExpeditionLocation.TUNGUSKA;
         } else {
-            System.out.println("!!!!!!!!!!!!!! ExpeditionLocation: " + file.getPath() + file.getName());
+            System.out.println("!!!!!!!!!!!!!! ExpeditionLocation: "  + file.getName());
         }
         return new ExpeditionCard(UUID.randomUUID(), CardType.EXPEDITION, getContent(file), location);
     }
@@ -124,25 +123,25 @@ public class GameBuilder {
             if (shirtFile.getName().contains("general")) {
                 addCardShirt(shirtFile, CardType.GENERAL);
             }
-            if (shirtFile.getName().contains("myth")) {
+            if (shirtFile.getName().contains("mythos")) {
                 addCardShirt(shirtFile, CardType.MYTH);
             }
-            if (shirtFile.getName().contains("expedition_am")) {
+            if (shirtFile.getName().contains("exp_am")) {
                 addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_AMAZON);
             }
-            if (shirtFile.getName().contains("expedition_an")) {
+            if (shirtFile.getName().contains("exp_an")) {
                 addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.ANTARCTICA);
             }
-            if (shirtFile.getName().contains("expedition_gm")) {
+            if (shirtFile.getName().contains("exp_hm")) {
                 addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_HIMALAYAS);
             }
-            if (shirtFile.getName().contains("expedition_ha")) {
+            if (shirtFile.getName().contains("exp_hoa")) {
                 addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_HEARTH_OF_AFRICA);
             }
-            if (shirtFile.getName().contains("expedition_pr")) {
+            if (shirtFile.getName().contains("exp_pr")) {
                 addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_PYRAMIDS);
             }
-            if (shirtFile.getName().contains("expedition_tg")) {
+            if (shirtFile.getName().contains("exp_tg")) {
                 addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.TUNGUSKA);
             }
         }
@@ -183,27 +182,27 @@ public class GameBuilder {
     private Card readMythosCard(File file) {
         String[] cardInfo = file.getName().split("_");
         Complexity complexity = null;
-        if (cardInfo[2].equalsIgnoreCase("e")) {
-            complexity = Complexity.LIGHT;
-        } else if (cardInfo[2].equalsIgnoreCase("m")) {
+        if (cardInfo[1].equalsIgnoreCase(Complexity.EASY.name())) {
+            complexity = Complexity.EASY;
+        } else if (cardInfo[1].equalsIgnoreCase(Complexity.MID.name())) {
             complexity = Complexity.MID;
-        } else if (cardInfo[2].equalsIgnoreCase("h")) {
+        } else if (cardInfo[1].equalsIgnoreCase(Complexity.HARD.name())) {
             complexity = Complexity.HARD;
         } else {
             System.out.println("!!!!!!!!!!!!!! complexity: " + file.getName());
         }
-        Color color = null;
-        if (cardInfo[3].equalsIgnoreCase("y")) {
-            color = Color.YELLOW;
-        } else if (cardInfo[3].equalsIgnoreCase("b")) {
-            color = Color.BLUE;
-        } else if (cardInfo[3].equalsIgnoreCase("g")) {
-            color = Color.GREEN;
+        MythosColor mythosColor = null;
+        if (cardInfo[0].equalsIgnoreCase(MythosColor.YELLOW.name())) {
+            mythosColor = MythosColor.YELLOW;
+        } else if (cardInfo[0].equalsIgnoreCase(MythosColor.BLUE.name())) {
+            mythosColor = MythosColor.BLUE;
+        } else if (cardInfo[0].equalsIgnoreCase(MythosColor.GREEN.name())) {
+            mythosColor = MythosColor.GREEN;
         } else {
             System.out.println("!!!!!!!!!!!!!! color: " + file.getName());
         }
         boolean event = false;
-        if (cardInfo[4].equalsIgnoreCase("e")) {
+        if (cardInfo[3].equalsIgnoreCase("event")) {
             event = true;
         }
         Card card = new MythosCard(
@@ -211,7 +210,7 @@ public class GameBuilder {
                 CardType.MYTH,
                 getContent(file),
                 complexity,
-                color,
+                mythosColor,
                 event
         );
         return card;
