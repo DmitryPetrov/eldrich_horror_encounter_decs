@@ -9,7 +9,7 @@ public enum CardType {
     //RESEARCH (false),
     EXPEDITION (true),
     //SPECIAL (false),
-    MYTH (true),
+    MYTHOS (true),
     MYSTERY(true);
 
     final boolean special;

@@ -3,45 +3,34 @@ package main.java;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.java.horror.Card;
+import main.java.dealer.FileSystemSourceLoader;
 import main.java.horror.CardType;
+import main.java.horror.GameBase;
 import main.java.horror.Table;
 import main.java.horror.ancient.AncientOne;
 import main.java.horror.ancient.Azathoth;
 import main.java.horror.expedition.ExpeditionDeck;
-import main.java.horror.myth.MythosCard;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Set;
+import java.util.List;
 
 public class EldrichHorror extends Application {
 
     Table table;
-    GameBuilder gameBuilder;
 
     public EldrichHorror() {
-
-        gameBuilder = new GameBuilder();
+        FileSystemSourceLoader sourceLoader = new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE));
         AncientOne azathoth = new Azathoth();
-        Set<Card> allCards = gameBuilder.readCards();
-        table = new Table(azathoth, allCards, false);
-
+        table = new Table(azathoth, sourceLoader, false);
     }
 
 
@@ -83,7 +72,7 @@ public class EldrichHorror extends Application {
         ExpeditionDeck expeditionDeck = table.getExpeditionDeck();
 
         Image cardShirtImage = new Image(new ByteArrayInputStream(
-                gameBuilder.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
+                table.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
         ));
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(100);
@@ -100,7 +89,7 @@ public class EldrichHorror extends Application {
                 cardFrontPlace.setFitHeight(730);
                 cardShirt.setImage(
                         new Image(new ByteArrayInputStream(
-                                gameBuilder.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
+                                table.expeditionCardShirts.get(expeditionDeck.showNextCardLocation()).content
                 )));
             }
         };
@@ -109,7 +98,7 @@ public class EldrichHorror extends Application {
     }
 
     Button buildContactButtons(CardType type, ImageView cardFrontPlace) {
-        Image cardShirtImage = new Image(new ByteArrayInputStream(gameBuilder.cardShirts.get(type).content));
+        Image cardShirtImage = new Image(new ByteArrayInputStream(table.cardShirts.get(type).content));
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(100);
         cardShirt.setFitHeight(150);
@@ -129,35 +118,21 @@ public class EldrichHorror extends Application {
     }
 
     private void buildMythDeck(Stage primaryStage) {
-        HBox hbox = new HBox();
-
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.setSpacing(10);
-
-        hbox.getChildren().addAll(vbox);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-
         ImageView cardFront = new ImageView();
-
-        grid.add(buildMythButton(cardFront), 0, 0);
-        grid.add(cardFront, 0, 1);
-
         vbox.getChildren().addAll(buildMythButton(cardFront), cardFront);
-
         primaryStage.setTitle("Древний Ужас");
         primaryStage.setWidth(500);
         primaryStage.setHeight(900);
-        primaryStage.setScene(new Scene(hbox));
+        primaryStage.setScene(new Scene(vbox));
         primaryStage.show();
     }
 
 
     Button buildMythButton(ImageView cardFront) {
-        Image cardShirtImage = new Image(new ByteArrayInputStream(gameBuilder.cardShirts.get(CardType.MYTH).content));
+        Image cardShirtImage = new Image(new ByteArrayInputStream(table.cardShirts.get(CardType.MYTHOS).content));
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(100);
         cardShirt.setFitHeight(150);

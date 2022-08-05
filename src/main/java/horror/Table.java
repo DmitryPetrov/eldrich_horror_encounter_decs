@@ -1,47 +1,42 @@
 package main.java.horror;
 
+import main.java.dealer.SourceLoader;
 import main.java.horror.ancient.AncientOne;
 import main.java.horror.expedition.ExpeditionDeck;
+import main.java.horror.expedition.ExpeditionLocation;
 import main.java.horror.myth.MythosCard;
 import main.java.horror.myth.MythosDeck;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.stream.Collectors;
 
 public class Table {
 
-    private Set<Card> allCards;
     private Map<CardType, Deck> decks = new HashMap<>();
+
+    public final Map<CardType, Card> cardShirts;
+    public final Map<ExpeditionLocation, Card> expeditionCardShirts;
 
     private final AncientOne ancient;
     private final MythosDeck myths;
     //private final MysteryDeck mysteries;
 
-    public Table(AncientOne ancient, Set<Card> allCards, boolean easyMod) {
+    public Table(AncientOne ancient, SourceLoader dealer, boolean easyMod) {
         this.ancient = ancient;
-        this.allCards = allCards;
         for (CardType cardType: CardType.values()) {
             if (cardType.special) {
                 continue;
             }
-            decks.put(cardType, new Deck(getCards(cardType)));
+            decks.put(cardType, new Deck(cardType, dealer));
         }
-        decks.put(CardType.EXPEDITION, new ExpeditionDeck(getCards(CardType.EXPEDITION)));
-        myths = new MythosDeck(getCards(CardType.MYTH), ancient, easyMod);
+        decks.put(CardType.EXPEDITION, new ExpeditionDeck(dealer));
+        myths = new MythosDeck(dealer, ancient, easyMod);
         //mysteries = new MysteryDeck(getCards(CardType.MYSTERY), ancient);
+        cardShirts = dealer.getCardShirts();
+        expeditionCardShirts = dealer.getCardExpeditionShirts();
     }
 
-    private List<Card> getCards(CardType cardType) {
-        return allCards
-                .stream()
-                .filter(card -> card.type.equals(cardType))
-                .collect(Collectors.toList());
-    }
 
     public Card getCard(CardType cardType) {
         return decks.get(cardType).get();

@@ -1,12 +1,15 @@
 package main.java.horror.myth;
 
+import main.java.dealer.SourceLoader;
 import main.java.horror.Card;
+import main.java.horror.CardType;
 import main.java.horror.Deck;
 import main.java.horror.ancient.AncientOne;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MythosDeck extends Deck {
@@ -14,8 +17,8 @@ public class MythosDeck extends Deck {
     private AncientOne elder;
     private List<MythosCard> inGame = new ArrayList<>();
 
-    public MythosDeck(List<Card> cards, AncientOne elder, boolean easyMod) {
-        List<MythosCard> mythCards = cards
+    public MythosDeck(SourceLoader dealer, AncientOne elder, boolean easyMod) {
+        List<MythosCard> mythCards = dealer.getCards(CardType.MYTHOS)
                 .stream()
                 .map(card -> (MythosCard) card)
                 .collect(Collectors.toList());
@@ -44,7 +47,7 @@ public class MythosDeck extends Deck {
         return top;
     }
 
-    public void discardCard(int cardId) {
+    public void discardCard(UUID cardId) {
         inGame
                 .stream()
                 .filter(mythCard -> mythCard.id.equals(cardId))

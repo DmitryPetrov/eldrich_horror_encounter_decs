@@ -11,9 +11,7 @@ public class MysteryDeck extends Deck {
     private Card current;
 
     public MysteryDeck(List<Card> cards, AncientOne ancient) {
-        super(cards);
         this.ancient = ancient;
-
     }
 
     public void nextMystery() {

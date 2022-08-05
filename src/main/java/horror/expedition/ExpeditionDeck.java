@@ -1,6 +1,8 @@
 package main.java.horror.expedition;
 
+import main.java.dealer.SourceLoader;
 import main.java.horror.Card;
+import main.java.horror.CardType;
 import main.java.horror.Deck;
 
 import java.util.ArrayList;
@@ -11,8 +13,8 @@ public class ExpeditionDeck extends Deck {
 
     public List<Card> box;
 
-    public ExpeditionDeck(List<Card> cards) {
-        super(cards);
+    public ExpeditionDeck(SourceLoader dealer) {
+        super(CardType.EXPEDITION, dealer);
     }
 
     public void moveToBox(ExpeditionLocation excluded) {

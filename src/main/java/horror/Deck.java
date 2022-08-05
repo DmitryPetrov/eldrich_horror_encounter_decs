@@ -1,5 +1,7 @@
 package main.java.horror;
 
+import main.java.dealer.SourceLoader;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,14 +12,14 @@ public class Deck {
     protected Stack<Card> cards;
     protected Stack<Card> discardedCards;
 
-    public Deck(List<Card> cards) {
+    protected Deck() {}
+
+    public Deck(CardType cardType, SourceLoader dealer) {
         this.discardedCards = new Stack<>();
         this.cards = new Stack<>();
-        this.cards.addAll(cards);
+        this.cards.addAll(dealer.getCards(cardType));
         reshuffle();
     }
-
-    protected Deck() {}
 
     public Card get() {
         if (cards.isEmpty()) {
