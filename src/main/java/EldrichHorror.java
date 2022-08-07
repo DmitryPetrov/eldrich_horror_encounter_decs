@@ -1,9 +1,7 @@
 package main.java;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.java.dealer.FileSystemSourceLoader;
 import main.java.horror.GameBase;
@@ -11,6 +9,7 @@ import main.java.horror.Table;
 import main.java.horror.ancient.AncientName;
 import main.java.screen.AncientScreen;
 import main.java.screen.Encounters;
+import main.java.screen.MainScreen;
 import main.java.screen.Mythos;
 
 import java.io.IOException;
@@ -22,6 +21,12 @@ public class EldrichHorror extends Application {
     Encounters encounters;
     Mythos mythos;
     AncientScreen ancientScreen;
+    MainScreen mainScreen;
+
+    public static void main(String[] args) throws IOException {
+        new EldrichHorror();
+        launch(args);
+    }
 
     public EldrichHorror() {
         FileSystemSourceLoader sourceLoader = new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE));
@@ -29,32 +34,16 @@ public class EldrichHorror extends Application {
         encounters = new Encounters(table);
         mythos = new Mythos(table);
         ancientScreen = new AncientScreen(table);
+        mainScreen = new MainScreen(table);
     }
 
-
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        HBox lines = new HBox();
-        lines.setPadding(new Insets(10, 10, 10, 10));
-        lines.setSpacing(10);
-        lines.getChildren().addAll(
-                encounters.buildContactsDeck(),
-                mythos.buildMythDeck(),
-                ancientScreen.buildScene()
-        );
-
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Древний Ужас");
         primaryStage.setWidth(1920);
         primaryStage.setHeight(1080);
-        primaryStage.setScene(new Scene(lines));
+        primaryStage.setScene(new Scene(mainScreen.build()));
         primaryStage.show();
     }
-
-    public static void main(String[] args) throws IOException {
-        launch(args);
-        new EldrichHorror();
-    }
-
-
 
 }

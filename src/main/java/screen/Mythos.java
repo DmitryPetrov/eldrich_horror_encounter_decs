@@ -12,6 +12,7 @@ public class Mythos {
 
     Table table;
     MythosDeck mythosDeck;
+    Pane screen;
 
     public Mythos(Table table) {
         this.table = table;
@@ -25,6 +26,7 @@ public class Mythos {
         vbox.setAlignment(Pos.TOP_CENTER);
         CardPlace cardFront = new CardPlace(mythosDeck.getShirt());
         vbox.getChildren().addAll(buildMythButton(cardFront), cardFront);
+        screen = vbox;
         return vbox;
     }
 

@@ -19,6 +19,7 @@ public class AncientScreen {
 
     Table table;
     AncientOne ancientOne;
+    public Pane screen;
 
     public AncientScreen(Table table) {
         this.table = table;
@@ -26,12 +27,13 @@ public class AncientScreen {
     }
 
     public Pane buildScene() {
-        VBox vbox = new VBox();
-        vbox.setPadding(new Insets(10, 10, 10, 10));
-        vbox.setSpacing(50);
-        vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.getChildren().addAll(buildAncientCard(), buildMysteryRow());
-        return vbox;
+        HBox box = new HBox();
+        box.setPadding(new Insets(10, 10, 10, 10));
+        box.setSpacing(50);
+        box.setAlignment(Pos.TOP_CENTER);
+        box.getChildren().addAll(buildAncientCard(), buildMysteryRow());
+        screen = box;
+        return box;
     }
 
     public Pane buildMysteryRow() {

@@ -16,10 +16,13 @@ import java.io.ByteArrayInputStream;
 public class Encounters {
 
     Table table;
+    Pane screen;
+
 
     public Encounters(Table table) {
         this.table = table;
     }
+
 
     public Pane buildContactsDeck() {
         VBox lines = new VBox();
@@ -42,6 +45,7 @@ public class Encounters {
 
         lines.getChildren().addAll(buttonRow, cardRow);
 
+        screen = lines;
         return lines;
     }
 
