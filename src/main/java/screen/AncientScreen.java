@@ -48,9 +48,10 @@ public class AncientScreen {
         ImageView cardShirtPlace = new ImageView(cardShirt);
         cardShirtPlace.setFitWidth(126);
         cardShirtPlace.setFitHeight(82);
-        Button mysteryButton = new Button("", cardShirtPlace);
+        Button button = new Button("", cardShirtPlace);
+        button.setBackground(null);
 
-        mysteryButton.setOnAction(
+        button.setOnAction(
                 e -> {
                     cardFrontPlace.setImage(new Image(new ByteArrayInputStream(ancientOne.getMysteryDeck().get().content)));
                     cardFrontPlace.setFitWidth(534);
@@ -58,7 +59,7 @@ public class AncientScreen {
                 }
         );
 
-        mysteryRow.getChildren().addAll(mysteryButton, cardFrontPlace);
+        mysteryRow.getChildren().addAll(button, cardFrontPlace);
 
         return mysteryRow;
     }
@@ -69,6 +70,7 @@ public class AncientScreen {
         ancientView.setFitWidth(500);
         ancientView.setFitHeight(650);
         Button button = new Button("", ancientView);
+        button.setBackground(null);
         button.setOnAction(e -> {
             ancientView.setImage(new Image(new ByteArrayInputStream(ancientOne.getBack())));
             ancientView.setFitWidth(500);

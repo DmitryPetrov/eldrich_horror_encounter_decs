@@ -2,6 +2,10 @@ package main.java;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 import main.java.dealer.FileSystemSourceLoader;
 import main.java.horror.GameBase;
@@ -39,10 +43,13 @@ public class EldrichHorror extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Scene scene = new Scene(mainScreen.build());
+
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Древний Ужас");
         primaryStage.setWidth(1920);
         primaryStage.setHeight(1080);
-        primaryStage.setScene(new Scene(mainScreen.build()));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

@@ -65,13 +65,14 @@ public class Encounters {
         ImageView cardShirt = new ImageView(cardShirtImage);
         cardShirt.setFitWidth(82);
         cardShirt.setFitHeight(126);
-        Button mythosButton = new Button("", cardShirt);
+        Button button = new Button("", cardShirt);
+        button.setBackground(null);
 
-        mythosButton.setOnAction(e -> {
+        button.setOnAction(e -> {
             cardPlace.updateCard(table.getCard(CardType.EXPEDITION));
             cardShirt.setImage(new Image(new ByteArrayInputStream(expeditionDeck.showNextCardLocation().content)));
         });
-        return mythosButton;
+        return button;
     }
 
 }

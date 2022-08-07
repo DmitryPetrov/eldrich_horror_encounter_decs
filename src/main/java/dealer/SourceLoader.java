@@ -17,4 +17,6 @@ public interface SourceLoader {
     Map<ExpeditionLocation, Card> getCardExpeditionShirts();
 
     Map<String, byte[]> getAncientCards(AncientName name);
+
+    byte[] getTableSurface();
 }

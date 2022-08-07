@@ -11,6 +11,7 @@ public class CardButton extends Button {
 
     public CardButton(Card shirt) {
         super("", new CardButtonImage(shirt));
+        this.setBackground(null);
     }
 
 

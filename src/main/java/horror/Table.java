@@ -21,6 +21,8 @@ public class Table {
     private final AncientOne ancient;
     private final MythosDeck myths;
 
+    private final byte[] tableSurface;
+
     public Table(AncientName name, SourceLoader dealer, boolean easyMod) {
         this.ancient = OuterSpace.callTheAncientOne(name, dealer);
         decks.put(CardType.RESEARCH, ancient.getResearchDeck());
@@ -33,6 +35,7 @@ public class Table {
         }
         decks.put(CardType.EXPEDITION, new ExpeditionDeck(dealer));
         myths = new MythosDeck(dealer, ancient, easyMod);
+        this.tableSurface = dealer.getTableSurface();
     }
 
 
@@ -58,5 +61,9 @@ public class Table {
 
     public AncientOne getAncient() {
         return ancient;
+    }
+
+    public byte[] getTableSurface() {
+        return tableSurface;
     }
 }
