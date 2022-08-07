@@ -23,7 +23,7 @@ public class MainScreen {
 
     public Pane build() {
         encounters.buildContactsDeck();
-        mythos.buildMythDeck();
+        mythos.build();
         ancientScreen.buildScene();
 
 

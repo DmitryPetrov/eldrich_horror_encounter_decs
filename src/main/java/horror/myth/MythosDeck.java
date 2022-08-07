@@ -48,12 +48,23 @@ public class MythosDeck extends Deck {
         return top;
     }
 
-    public void discardCard(UUID cardId) {
+    public int discardCard(UUID cardId) {
         inGame
                 .stream()
                 .filter(mythCard -> mythCard.id.equals(cardId))
                 .findFirst()
                 .ifPresent(discardedCards::add);
+
+        int index = -1;
+        for (int i = 0; i < inGame.size(); i ++) {
+            MythosCard card = inGame.get(i);
+            if (card.id.equals(cardId)) {
+                 inGame.remove(card);
+                 index = i;
+                 break;
+            }
+        }
+        return index;
     }
 
     public List<Card> showInGameCards() {

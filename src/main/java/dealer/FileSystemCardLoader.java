@@ -170,7 +170,7 @@ public class FileSystemCardLoader {
             System.out.println("!!!!!!!!!!!!!! color: " + file.getName());
         }
         boolean event = false;
-        if (cardInfo[3].equalsIgnoreCase("event")) {
+        if (cardInfo[2].equalsIgnoreCase("event")) {
             event = true;
         }
         Card card = new MythosCard(
