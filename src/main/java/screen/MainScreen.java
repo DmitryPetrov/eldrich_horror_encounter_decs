@@ -1,7 +1,6 @@
 package main.java.screen;
 
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,7 +10,6 @@ import javafx.scene.text.Font;
 import main.java.horror.Table;
 
 import java.io.ByteArrayInputStream;
-import java.util.List;
 
 public class MainScreen {
 
@@ -36,7 +34,7 @@ public class MainScreen {
         AnchorPane field = new AnchorPane();
 
         HBox buttons = new HBox();
-        buttons.setPadding(new Insets(50, 50, 50, 50));
+        buttons.setPadding(new Insets(30, 50, 30, 50));
         buttons.setSpacing(100);
 
         Button encounterButton = new Button("Encounters");

@@ -10,7 +10,7 @@ public class CardButtonImage extends ImageView {
 
     public CardButtonImage(Card shirt) {
         super(new Image(new ByteArrayInputStream(shirt.content)));
-        this.setFitWidth(82);
-        this.setFitHeight(126);
+        this.setFitWidth(114);
+        this.setFitHeight(178);
     }
 }

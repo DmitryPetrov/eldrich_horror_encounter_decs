@@ -4,70 +4,96 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import main.java.horror.CardType;
 import main.java.horror.Table;
 import main.java.horror.expedition.ExpeditionDeck;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 
 public class Encounters {
 
-    Table table;
-    Pane screen;
+    private final Table table;
+    public final Pane screen;
 
+    private Pane encounterDecs;
 
     public Encounters(Table table) {
         this.table = table;
+        buildContactsDeck();
+        HBox scene = new HBox();
+        HBox tablet = new HBox();
+        tablet.setPadding(new Insets(50, 50, 50, 50));
+        tablet.setSpacing(50);
+        tablet.setBorder(new Border(new BorderStroke(
+                Paint.valueOf("#303030"), BorderStrokeStyle.SOLID, new CornerRadii(12), new BorderWidths(1)
+        )));
+        tablet.getChildren().add(encounterDecs);
+        scene.getChildren().add(tablet);
+        scene.setPadding(new Insets(0, 50, 0, 50));
+        screen = scene;
     }
 
 
-    public Pane buildContactsDeck() {
-        VBox lines = new VBox();
-        lines.setPadding(new Insets(10, 10, 10, 10));
-        lines.setSpacing(10);
-
-        CardPlace cardFrontPlace = new CardPlace(table.getCardShirts(CardType.GENERAL));
-        HBox cardRow = new HBox();
-        cardRow.getChildren().add(cardFrontPlace);
-
-        HBox buttonRow = new HBox();
-        for (CardType type: CardType.values()) {
+    public void buildContactsDeck() {
+        HBox encounters = new HBox();
+        encounters.setSpacing(50);
+        CardPlace cardFrontPlace = new CardPlace(table.getCardShirts(CardType.GENERAL), true);
+        HBox card = new HBox();
+        card.setBorder(new Border(new BorderStroke(
+                Paint.valueOf("#303030"), BorderStrokeStyle.DOTTED, new CornerRadii(12), new BorderWidths(1)
+        )));
+        card.setPadding(new Insets(15, 15, 15, 15));
+        card.getChildren().add(cardFrontPlace);
+        VBox buttonRows = new VBox();
+        buttonRows.setBorder(new Border(new BorderStroke(
+                Paint.valueOf("#303030"), BorderStrokeStyle.DOTTED, new CornerRadii(12), new BorderWidths(1)
+        )));
+        buttonRows.setPadding(new Insets(15, 15, 15, 15));
+        buttonRows.setSpacing(30);
+        ArrayList<Button> buttonList = new ArrayList<>();
+        for (CardType type : CardType.values()) {
             if (type.isSpecial()) {
                 continue;
             }
-            buttonRow.getChildren().add(buildContactButtons(type, cardFrontPlace));
+            buttonList.add(buildContactButtons(type, cardFrontPlace));
         }
-        buttonRow.getChildren().add(buildExpeditionButton(cardFrontPlace));
-        buttonRow.getChildren().add(buildContactButtons(CardType.RESEARCH, cardFrontPlace));
-
-        lines.getChildren().addAll(buttonRow, cardRow);
-
-        screen = lines;
-        return lines;
+        buttonList.add(buildExpeditionButton(cardFrontPlace));
+        buttonList.add(buildContactButtons(CardType.RESEARCH, cardFrontPlace));
+        for (int i = 0; i < buttonList.size(); i = i + 3) {
+            HBox buttonRow = new HBox();
+            buttonRow.setSpacing(30);
+            buttonRows.getChildren().add(buttonRow);
+            for (int j = 0; j < 3; j++) {
+                if (i + j >= buttonList.size()) {
+                    break;
+                }
+                buttonRow.getChildren().add(buttonList.get(i + j));
+            }
+        }
+        encounters.getChildren().addAll(buttonRows, card);
+        encounterDecs = encounters;
     }
 
     Button buildContactButtons(CardType type, CardPlace cardFrontPlace) {
-        Button mythosButton = new CardButton(table.getCardShirts(type));
+        Button button = new CardButton(table.getCardShirts(type));
         cardFrontPlace.updateCard(table.getCardShirts(type));
-        mythosButton.setOnAction(
+        button.setOnAction(
                 e -> cardFrontPlace.updateCard(table.getCard(type))
         );
-        return mythosButton;
+        return button;
     }
 
     Button buildExpeditionButton(CardPlace cardPlace) {
         ExpeditionDeck expeditionDeck = table.getExpeditionDeck();
-
         Image cardShirtImage = new Image(new ByteArrayInputStream(expeditionDeck.showNextCardLocation().content));
         ImageView cardShirt = new ImageView(cardShirtImage);
-        cardShirt.setFitWidth(82);
-        cardShirt.setFitHeight(126);
+        cardShirt.setFitWidth(114);
+        cardShirt.setFitHeight(178);
         Button button = new Button("", cardShirt);
         button.setBackground(null);
-
         button.setOnAction(e -> {
             cardPlace.updateCard(table.getCard(CardType.EXPEDITION));
             cardShirt.setImage(new Image(new ByteArrayInputStream(expeditionDeck.showNextCardLocation().content)));
