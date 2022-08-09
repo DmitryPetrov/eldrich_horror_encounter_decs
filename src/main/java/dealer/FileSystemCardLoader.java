@@ -23,16 +23,12 @@ public class FileSystemCardLoader {
 
     private final Map<GameBase, String> gameBasePaths = new HashMap<>();
     private final Map<CardType, String> cardTypePaths = new HashMap<>();
-    private final Map<ExpeditionLocation, String> expLocationMarks = new HashMap<>();
-    private final Map<MythosColor, String> mythosColorMarks = new HashMap<>();
-    private final Map<Complexity, String> mythosComplexityMarks = new HashMap<>();
+    private final Map<String, ExpeditionLocation> expLocationMarks = new HashMap<>();
 
     public FileSystemCardLoader(List<GameBase> bases) {
         gameBasePathSetUp();
         cardTypePathsSetUp();
         expLocationMarksSetUp();
-        mythosColorMarksSetUp();
-        mythosComplexityMarksSetUp();
         this.bases = new ArrayList<>(bases);
         getBaseDirs();
     }
@@ -57,29 +53,15 @@ public class FileSystemCardLoader {
         cardTypePaths.put(CardType.GATE, CardType.GATE.name().toLowerCase(Locale.ROOT));
         cardTypePaths.put(CardType.MYTHOS, CardType.MYTHOS.name().toLowerCase(Locale.ROOT));
         cardTypePaths.put(CardType.MYSTERY, CardType.MYSTERY.name().toLowerCase(Locale.ROOT));
-        //cardTypePaths.put(CardType.RESEARCH, CardType.RESEARCH.name().toLowerCase(Locale.ROOT));
-        //cardTypePaths.put(CardType.SPECIAL, CardType.SPECIAL.name().toLowerCase(Locale.ROOT));
     }
 
     private void expLocationMarksSetUp() {
-        expLocationMarks.put(ExpeditionLocation.ANTARCTICA, "an");
-        expLocationMarks.put(ExpeditionLocation.THE_AMAZON, "am");
-        expLocationMarks.put(ExpeditionLocation.THE_HEARTH_OF_AFRICA, "hoa");
-        expLocationMarks.put(ExpeditionLocation.THE_HIMALAYAS, "hm");
-        expLocationMarks.put(ExpeditionLocation.THE_PYRAMIDS, "pr");
-        expLocationMarks.put(ExpeditionLocation.TUNGUSKA, "tg");
-    }
-
-    private void mythosColorMarksSetUp() {
-        mythosColorMarks.put(MythosColor.BLUE, MythosColor.BLUE.name().toLowerCase(Locale.ROOT));
-        mythosColorMarks.put(MythosColor.GREEN, MythosColor.GREEN.name().toLowerCase(Locale.ROOT));
-        mythosColorMarks.put(MythosColor.YELLOW, MythosColor.YELLOW.name().toLowerCase(Locale.ROOT));
-    }
-
-    private void mythosComplexityMarksSetUp() {
-        mythosComplexityMarks.put(Complexity.EASY, Complexity.EASY.name().toLowerCase(Locale.ROOT));
-        mythosComplexityMarks.put(Complexity.MID, Complexity.MID.name().toLowerCase(Locale.ROOT));
-        mythosComplexityMarks.put(Complexity.HARD, Complexity.HARD.name().toLowerCase(Locale.ROOT));
+        expLocationMarks.put("an", ExpeditionLocation.ANTARCTICA);
+        expLocationMarks.put("am", ExpeditionLocation.THE_AMAZON);
+        expLocationMarks.put("hoa", ExpeditionLocation.THE_HEARTH_OF_AFRICA);
+        expLocationMarks.put("hm", ExpeditionLocation.THE_HIMALAYAS);
+        expLocationMarks.put("pr", ExpeditionLocation.THE_PYRAMIDS);
+        expLocationMarks.put("tg", ExpeditionLocation.TUNGUSKA);
     }
 
     private void getBaseDirs() {
@@ -128,47 +110,15 @@ public class FileSystemCardLoader {
     }
 
     private Card readExpeditionCard(File file) {
-        ExpeditionLocation location = null;
-        if (file.getName().contains("am")) {
-            location = ExpeditionLocation.THE_AMAZON;
-        } else if (file.getName().contains("an")) {
-            location = ExpeditionLocation.ANTARCTICA;
-        } else if (file.getName().contains("hm")) {
-            location = ExpeditionLocation.THE_HIMALAYAS;
-        } else if (file.getName().contains("hoa")) {
-            location = ExpeditionLocation.THE_HEARTH_OF_AFRICA;
-        } else if (file.getName().contains("pr")) {
-            location = ExpeditionLocation.THE_PYRAMIDS;
-        } else if (file.getName().contains("tg")) {
-            location = ExpeditionLocation.TUNGUSKA;
-        } else {
-            System.out.println("!!!!!!!!!!!!!! ExpeditionLocation: "  + file.getName());
-        }
+        String[] nameParts = file.getName().split("_");
+        ExpeditionLocation location = expLocationMarks.get(nameParts[0]);
         return new ExpeditionCard(UUID.randomUUID(), CardType.EXPEDITION, readCardContent(file), location);
     }
 
     private Card readMythosCard(File file) {
         String[] cardInfo = file.getName().split("_");
-        Complexity complexity = null;
-        if (cardInfo[1].equalsIgnoreCase(Complexity.EASY.name())) {
-            complexity = Complexity.EASY;
-        } else if (cardInfo[1].equalsIgnoreCase(Complexity.MID.name())) {
-            complexity = Complexity.MID;
-        } else if (cardInfo[1].equalsIgnoreCase(Complexity.HARD.name())) {
-            complexity = Complexity.HARD;
-        } else {
-            System.out.println("!!!!!!!!!!!!!! complexity: " + file.getName());
-        }
-        MythosColor mythosColor = null;
-        if (cardInfo[0].equalsIgnoreCase(MythosColor.YELLOW.name())) {
-            mythosColor = MythosColor.YELLOW;
-        } else if (cardInfo[0].equalsIgnoreCase(MythosColor.BLUE.name())) {
-            mythosColor = MythosColor.BLUE;
-        } else if (cardInfo[0].equalsIgnoreCase(MythosColor.GREEN.name())) {
-            mythosColor = MythosColor.GREEN;
-        } else {
-            System.out.println("!!!!!!!!!!!!!! color: " + file.getName());
-        }
+        Complexity complexity = Complexity.valueOf(cardInfo[1].toUpperCase());
+        MythosColor mythosColor = MythosColor.valueOf(cardInfo[0].toUpperCase());
         boolean event = false;
         if (cardInfo[2].equalsIgnoreCase("event")) {
             event = true;
@@ -210,26 +160,21 @@ public class FileSystemCardLoader {
         File cardShirtDir = dirs[0];
         List<File> cardShirtFiles = Arrays.stream(Objects.requireNonNull(cardShirtDir.listFiles()))
                 .collect(Collectors.toList());
-        for (File shirtFile : cardShirtFiles) {
-            if (shirtFile.getName().contains("america")) {
-                addCardShirt(shirtFile, CardType.AMERICA, shirts);
+        for (CardType cardType: CardType.values()) {
+            if (cardType.isSpecial()) {
+                continue;
             }
-            if (shirtFile.getName().contains("asia")) {
-                addCardShirt(shirtFile, CardType.ASIA, shirts);
-            }
-            if (shirtFile.getName().contains("europe")) {
-                addCardShirt(shirtFile, CardType.EUROPE, shirts);
-            }
-            if (shirtFile.getName().contains("gate")) {
-                addCardShirt(shirtFile, CardType.GATE, shirts);
-            }
-            if (shirtFile.getName().contains("general")) {
-                addCardShirt(shirtFile, CardType.GENERAL, shirts);
-            }
-            if (shirtFile.getName().contains("mythos")) {
-                addCardShirt(shirtFile, CardType.MYTHOS, shirts);
-            }
+            cardShirtFiles
+                    .stream()
+                    .filter(file -> file.getName().contains(cardType.name().toLowerCase()))
+                    .findFirst()
+                    .ifPresent(file -> addCardShirt(file, cardType, shirts));
         }
+        cardShirtFiles
+                .stream()
+                .filter(file -> file.getName().contains(CardType.MYTHOS.name().toLowerCase()))
+                .findFirst()
+                .ifPresent(file -> addCardShirt(file, CardType.MYTHOS, shirts));
         return shirts;
     }
 
@@ -247,24 +192,19 @@ public class FileSystemCardLoader {
         List<File> cardShirtFiles = Arrays.stream(Objects.requireNonNull(cardShirtDir.listFiles()))
                 .collect(Collectors.toList());
         for (File shirtFile: cardShirtFiles) {
-            if (shirtFile.getName().contains("exp_am")) {
-                addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_AMAZON, shirts);
+            if (!shirtFile.getName().contains("exp")) {
+                continue;
             }
-            if (shirtFile.getName().contains("exp_an")) {
-                addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.ANTARCTICA, shirts);
-            }
-            if (shirtFile.getName().contains("exp_hm")) {
-                addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_HIMALAYAS, shirts);
-            }
-            if (shirtFile.getName().contains("exp_hoa")) {
-                addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_HEARTH_OF_AFRICA, shirts);
-            }
-            if (shirtFile.getName().contains("exp_pr")) {
-                addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.THE_PYRAMIDS, shirts);
-            }
-            if (shirtFile.getName().contains("exp_tg")) {
-                addExpeditionCardShirt(shirtFile, CardType.EXPEDITION, ExpeditionLocation.TUNGUSKA, shirts);
-            }
+            String locationMark = shirtFile
+                    .getName()
+                    .split("_")[1]
+                    .replace(".jpg", "");
+            addExpeditionCardShirt(
+                    shirtFile,
+                    CardType.EXPEDITION,
+                    expLocationMarks.get(locationMark),
+                    shirts
+            );
         }
         return shirts;
     }
