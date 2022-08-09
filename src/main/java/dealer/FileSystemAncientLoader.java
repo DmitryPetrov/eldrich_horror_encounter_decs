@@ -53,7 +53,7 @@ public class FileSystemAncientLoader {
         Map<String, byte[]> result = new HashMap<>();
         for (File baseDir: selectedBaseDirs) {
             File ancientDir = openDir(baseDir, ANCIENT_PATH);
-            File selectedAncientDir = openDir(ancientDir, name.name());
+            File selectedAncientDir = openDir(ancientDir, name.name().replace("_", "-"));
             File[] ancientFiles = selectedAncientDir.listFiles();
             for (File file: ancientFiles) {
                 result.put(file.getName(), readFileContent(file));

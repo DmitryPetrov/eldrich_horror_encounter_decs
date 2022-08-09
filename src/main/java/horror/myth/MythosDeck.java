@@ -36,7 +36,6 @@ public class MythosDeck extends Deck {
 
     public Card get() {
         if (cards.empty()) {
-            elder.win();
             return null;
         }
         MythosCard top = (MythosCard) cards.pop();

@@ -16,9 +16,6 @@ public class MysteryDeck extends Deck {
 
     public void nextMystery() {
         discardedCards.add(current);
-        if ((discardedCards.size() == 3) && ancient.inFirstPhase()) {
-            ancient.lose();
-        }
         current = super.get();
     }
 

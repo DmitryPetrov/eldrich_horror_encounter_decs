@@ -1,13 +1,20 @@
 package main.java.horror.ancient;
 
+import main.java.horror.Card;
+import main.java.horror.CardType;
 import main.java.horror.Deck;
 import main.java.horror.myth.MythosColor;
 import main.java.horror.myth.MythosCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.Stack;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public abstract class AncientOne {
@@ -73,11 +80,28 @@ public abstract class AncientOne {
         return mythosCards;
     }
 
-    public abstract void win();
-    
-    public abstract boolean inFirstPhase();
+    protected Deck buildDeckOrGetNull(Map<String, byte[]> ancientCards, String deckType) {
+        byte[] researchShirt = new byte[0];
+        Set<Card> researchCards = new HashSet<>();
 
-    public abstract void lose();
+        Set<String> cardsByType = ancientCards
+                .keySet()
+                .stream()
+                .filter(name -> name.contains(deckType))
+                .collect(Collectors.toSet());
+        if (cardsByType.isEmpty()) {
+            return null;
+        }
+
+        for (String fileName: cardsByType) {
+            if (fileName.contains("back")) {
+                researchShirt = ancientCards.get(fileName);
+                continue;
+            }
+            researchCards.add(new Card(UUID.randomUUID(), CardType.RESEARCH, ancientCards.get(fileName)));
+        }
+        return new Deck(researchCards, researchShirt);
+    }
 
     public abstract byte[] getFace();
 
@@ -86,4 +110,9 @@ public abstract class AncientOne {
     public abstract Deck getResearchDeck();
 
     public abstract Deck getMysteryDeck();
+
+    public abstract Optional<Deck> getSpecialDeckOne();
+
+    public abstract Optional<Deck> getSpecialDeckTwo();
+
 }

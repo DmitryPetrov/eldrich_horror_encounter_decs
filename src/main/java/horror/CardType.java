@@ -7,7 +7,8 @@ public enum CardType {
     GENERAL(false),
     GATE (false),
     EXPEDITION (true),
-    //SPECIAL (false),
+    SPECIAL_ONE (true),
+    SPECIAL_TWO (true),
     RESEARCH (true),
     MYTHOS (true),
     MYSTERY(true);

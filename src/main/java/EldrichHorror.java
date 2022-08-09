@@ -2,10 +2,6 @@ package main.java;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 import main.java.dealer.FileSystemSourceLoader;
 import main.java.horror.GameBase;
@@ -34,7 +30,7 @@ public class EldrichHorror extends Application {
 
     public EldrichHorror() {
         FileSystemSourceLoader sourceLoader = new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE));
-        table = new Table(AncientName.AZATHOTH, sourceLoader, false);
+        table = new Table(AncientName.YOG_SOTHOTH, sourceLoader, false);
         encounters = new Encounters(table);
         mythos = new Mythos(table);
         ancientScreen = new AncientScreen(table);
@@ -45,7 +41,6 @@ public class EldrichHorror extends Application {
     public void start(Stage primaryStage) {
         Scene scene = new Scene(mainScreen.build());
 
-        primaryStage.setResizable(false);
         primaryStage.setTitle("Древний Ужас");
         primaryStage.setWidth(1920);
         primaryStage.setHeight(1080);

@@ -54,14 +54,16 @@ public class Encounters {
         buttonRows.setPadding(new Insets(15, 15, 15, 15));
         buttonRows.setSpacing(30);
         ArrayList<Button> buttonList = new ArrayList<>();
-        for (CardType type : CardType.values()) {
-            if (type.isSpecial()) {
+        for (CardType type : table.getDeckTypes()) {
+            if (type.equals(CardType.EXPEDITION)) {
+                buttonList.add(buildExpeditionButton(cardFrontPlace));
+                continue;
+            }
+            if (type.equals(CardType.MYSTERY)) {
                 continue;
             }
             buttonList.add(buildContactButtons(type, cardFrontPlace));
         }
-        buttonList.add(buildExpeditionButton(cardFrontPlace));
-        buttonList.add(buildContactButtons(CardType.RESEARCH, cardFrontPlace));
         for (int i = 0; i < buttonList.size(); i = i + 3) {
             HBox buttonRow = new HBox();
             buttonRow.setSpacing(30);

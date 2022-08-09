@@ -10,9 +10,12 @@ import main.java.horror.expedition.ExpeditionLocation;
 import main.java.horror.myth.MythosCard;
 import main.java.horror.myth.MythosDeck;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Table {
 
@@ -27,6 +30,8 @@ public class Table {
         this.ancient = OuterSpace.callTheAncientOne(name, dealer);
         decks.put(CardType.RESEARCH, ancient.getResearchDeck());
         decks.put(CardType.MYSTERY, ancient.getMysteryDeck());
+        ancient.getSpecialDeckOne().ifPresent(deck -> decks.put(CardType.SPECIAL_ONE, deck));
+        ancient.getSpecialDeckTwo().ifPresent(deck -> decks.put(CardType.SPECIAL_TWO, deck));
         for (CardType cardType: CardType.values()) {
             if (cardType.special) {
                 continue;
@@ -41,6 +46,24 @@ public class Table {
 
     public Card getCard(CardType cardType) {
         return decks.get(cardType).get();
+    }
+
+    public List<CardType> getDeckTypes() {
+        List<CardType> cardTypesInOrder = new ArrayList<>();
+        cardTypesInOrder.add(CardType.AMERICA);
+        cardTypesInOrder.add(CardType.EUROPE);
+        cardTypesInOrder.add(CardType.ASIA);
+        cardTypesInOrder.add(CardType.GENERAL);
+        cardTypesInOrder.add(CardType.EXPEDITION);
+        cardTypesInOrder.add(CardType.GATE);
+        cardTypesInOrder.add(CardType.RESEARCH);
+        if (decks.containsKey(CardType.SPECIAL_ONE)) {
+            cardTypesInOrder.add(CardType.SPECIAL_ONE);
+        }
+        if (decks.containsKey(CardType.SPECIAL_TWO)) {
+            cardTypesInOrder.add(CardType.SPECIAL_TWO);
+        }
+        return cardTypesInOrder;
     }
 
     public ExpeditionDeck getExpeditionDeck() {
