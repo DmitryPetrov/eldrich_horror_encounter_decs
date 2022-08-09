@@ -9,6 +9,12 @@ public class OuterSpace {
             return new Azathoth(dealer);
         } else if (name.equals(AncientName.YOG_SOTHOTH)) {
             return new YogSothoth(dealer);
+        } else if (name.equals(AncientName.CTHULHU)) {
+            return new Cthulhu(dealer);
+        } else if (name.equals(AncientName.SHUB_NIGGURATH)) {
+            return new ShubNiggurath(dealer);
+        } else if (name.equals(AncientName.YIG)) {
+            return new Yig(dealer);
         }
         throw new RuntimeException("The Ancient One " + name + " too busy now");
     }

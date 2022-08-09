@@ -54,8 +54,8 @@ public class Table {
         cardTypesInOrder.add(CardType.EUROPE);
         cardTypesInOrder.add(CardType.ASIA);
         cardTypesInOrder.add(CardType.GENERAL);
-        cardTypesInOrder.add(CardType.EXPEDITION);
         cardTypesInOrder.add(CardType.GATE);
+        cardTypesInOrder.add(CardType.EXPEDITION);
         cardTypesInOrder.add(CardType.RESEARCH);
         if (decks.containsKey(CardType.SPECIAL_ONE)) {
             cardTypesInOrder.add(CardType.SPECIAL_ONE);

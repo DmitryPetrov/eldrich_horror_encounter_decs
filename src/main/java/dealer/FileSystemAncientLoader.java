@@ -52,8 +52,14 @@ public class FileSystemAncientLoader {
     public Map<String, byte[]> getAncientCards(AncientName name) {
         Map<String, byte[]> result = new HashMap<>();
         for (File baseDir: selectedBaseDirs) {
-            File ancientDir = openDir(baseDir, ANCIENT_PATH);
-            File selectedAncientDir = openDir(ancientDir, name.name().replace("_", "-"));
+            File ancientDir = openDir(baseDir, ANCIENT_PATH)
+                    .orElseThrow(() -> new RuntimeException(baseDir.getPath() + " does not contain [" + ANCIENT_PATH + "] dir"));
+
+            File selectedAncientDir = openDir(ancientDir, name.name().replace("_", "-")).orElse(null);
+            if (selectedAncientDir == null) {
+                continue;
+            }
+
             File[] ancientFiles = selectedAncientDir.listFiles();
             for (File file: ancientFiles) {
                 result.put(file.getName(), readFileContent(file));
@@ -62,12 +68,12 @@ public class FileSystemAncientLoader {
         return result;
     }
 
-    private File openDir(File baseDir, String dirName) {
+    private Optional<File> openDir(File baseDir, String dirName) {
         File[] dirs = baseDir.listFiles((dir, name) -> name.equalsIgnoreCase(dirName));
         if (dirs == null || dirs.length == 0) {
-            throw new RuntimeException(baseDir.getPath() + " does not contain [" + dirName + "] dir");
+            return Optional.empty();
         }
-        return dirs[0];
+        return Optional.ofNullable(dirs[0]);
     }
 
     private byte[] readFileContent(File file) {

@@ -30,7 +30,7 @@ public class EldrichHorror extends Application {
 
     public EldrichHorror() {
         FileSystemSourceLoader sourceLoader = new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE));
-        table = new Table(AncientName.YOG_SOTHOTH, sourceLoader, false);
+        table = new Table(AncientName.YIG, sourceLoader, false);
         encounters = new Encounters(table);
         mythos = new Mythos(table);
         ancientScreen = new AncientScreen(table);
