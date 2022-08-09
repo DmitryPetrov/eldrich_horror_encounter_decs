@@ -96,6 +96,7 @@ public class Encounters {
         cardShirt.setFitHeight(178);
         Button button = new Button("", cardShirt);
         button.setBackground(null);
+        button.setOnMouseEntered(e -> {});
         button.setOnAction(e -> {
             cardPlace.updateCard(table.getCard(CardType.EXPEDITION));
             cardShirt.setImage(new Image(new ByteArrayInputStream(expeditionDeck.showNextCardLocation().content)));

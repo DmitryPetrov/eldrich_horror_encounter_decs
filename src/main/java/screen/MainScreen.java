@@ -26,8 +26,6 @@ public class MainScreen {
     }
 
     public Pane build() {
-        encounters.buildContactsDeck();
-        mythos.build();
         StackPane stackPane = new StackPane();
 
         VBox screen = new VBox();
@@ -41,7 +39,7 @@ public class MainScreen {
         encounterButton.setBackground(null);
         encounterButton.setFont(Font.font("Courier new bold", 40));
         encounterButton.setBorder(new Border(new BorderStroke(
-                Paint.valueOf("#708090"), BorderStrokeStyle.SOLID, new CornerRadii(12), new BorderWidths(2)
+                Paint.valueOf("#303030"), BorderStrokeStyle.DASHED, new CornerRadii(12), new BorderWidths(2)
         )));
         encounterButton.setOnAction(actionEvent -> {
             field.getChildren().clear();
@@ -52,7 +50,7 @@ public class MainScreen {
         mythosButton.setBackground(null);
         mythosButton.setFont(Font.font("Courier new bold", 40));
         mythosButton.setBorder(new Border(new BorderStroke(
-                Paint.valueOf("#708090"), BorderStrokeStyle.SOLID, new CornerRadii(12), new BorderWidths(2)
+                Paint.valueOf("#303030"), BorderStrokeStyle.DASHED, new CornerRadii(12), new BorderWidths(2)
         )));
         mythosButton.setOnAction(actionEvent -> {
             field.getChildren().clear();
@@ -63,7 +61,7 @@ public class MainScreen {
         ancientButton.setBackground(null);
         ancientButton.setFont(Font.font("Courier new bold", 40));
         ancientButton.setBorder(new Border(new BorderStroke(
-                Paint.valueOf("#708090"), BorderStrokeStyle.SOLID, new CornerRadii(12), new BorderWidths(2)
+                Paint.valueOf("#303030"), BorderStrokeStyle.DASHED, new CornerRadii(12), new BorderWidths(2)
         )));
         ancientButton.setOnAction(actionEvent -> {
             field.getChildren().clear();
