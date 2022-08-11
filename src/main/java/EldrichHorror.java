@@ -7,44 +7,33 @@ import main.java.dealer.FileSystemSourceLoader;
 import main.java.horror.GameBase;
 import main.java.horror.Table;
 import main.java.horror.ancient.AncientName;
-import main.java.screen.AncientScreen;
-import main.java.screen.Encounters;
+import main.java.screen.AncientSelector;
 import main.java.screen.MainScreen;
-import main.java.screen.Mythos;
 
 import java.io.IOException;
 import java.util.List;
 
 public class EldrichHorror extends Application {
 
-    Table table;
-    Encounters encounters;
-    Mythos mythos;
-    AncientScreen ancientScreen;
-    MainScreen mainScreen;
-
     public static void main(String[] args) throws IOException {
-        new EldrichHorror();
         launch(args);
-    }
-
-    public EldrichHorror() {
-        FileSystemSourceLoader sourceLoader = new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE));
-        table = new Table(AncientName.YIG, sourceLoader, false);
-        encounters = new Encounters(table);
-        mythos = new Mythos(table);
-        ancientScreen = new AncientScreen(table);
-        mainScreen = new MainScreen(table);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        Scene scene = new Scene(mainScreen.build());
+        Table table = new Table(new FileSystemSourceLoader(List.of(GameBase.ORIGIN, GameBase.FORSAKEN_LORE)));
+        MainScreen mainScreen = new MainScreen(primaryStage, table);
+
+        AncientSelector ancientSelector = new AncientSelector(primaryStage, mainScreen);
+        ancientSelector.build();
+
+        Scene selectorScene = new Scene(ancientSelector.screen);
+        mainScreen.addAncientSelector(selectorScene);
 
         primaryStage.setTitle("Древний Ужас");
         primaryStage.setWidth(1920);
         primaryStage.setHeight(1080);
-        primaryStage.setScene(scene);
+        primaryStage.setScene(selectorScene);
         primaryStage.show();
     }
 

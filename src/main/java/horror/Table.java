@@ -19,19 +19,17 @@ import java.util.Set;
 
 public class Table {
 
+    private final SourceLoader dealer;
+
     private Map<CardType, Deck> decks = new HashMap<>();
 
-    private final AncientOne ancient;
-    private final MythosDeck myths;
+    private AncientOne ancient;
+    private MythosDeck myths;
 
     private final byte[] tableSurface;
 
-    public Table(AncientName name, SourceLoader dealer, boolean easyMod) {
-        this.ancient = OuterSpace.callTheAncientOne(name, dealer);
-        decks.put(CardType.RESEARCH, ancient.getResearchDeck());
-        decks.put(CardType.MYSTERY, ancient.getMysteryDeck());
-        ancient.getSpecialDeckOne().ifPresent(deck -> decks.put(CardType.SPECIAL_ONE, deck));
-        ancient.getSpecialDeckTwo().ifPresent(deck -> decks.put(CardType.SPECIAL_TWO, deck));
+    public Table(SourceLoader dealer) {
+        this.dealer = dealer;
         for (CardType cardType: CardType.values()) {
             if (cardType.special) {
                 continue;
@@ -39,10 +37,24 @@ public class Table {
             decks.put(cardType, new Deck(cardType, dealer));
         }
         decks.put(CardType.EXPEDITION, new ExpeditionDeck(dealer));
-        myths = new MythosDeck(dealer, ancient, easyMod);
         this.tableSurface = dealer.getTableSurface();
     }
 
+    public void buildGame(AncientName name, boolean easyMod) {
+        decks.remove(CardType.SPECIAL_ONE);
+        decks.remove(CardType.SPECIAL_TWO);
+
+        this.ancient = OuterSpace.callTheAncientOne(name, dealer);
+        decks.put(CardType.RESEARCH, ancient.getResearchDeck());
+        decks.put(CardType.MYSTERY, ancient.getMysteryDeck());
+        ancient.getSpecialDeckOne().ifPresent(deck -> decks.put(CardType.SPECIAL_ONE, deck));
+        ancient.getSpecialDeckTwo().ifPresent(deck -> decks.put(CardType.SPECIAL_TWO, deck));
+        myths = new MythosDeck(dealer, ancient, easyMod);
+    }
+
+    public boolean isReady() {
+        return (this.ancient != null);
+    }
 
     public Card getCard(CardType cardType) {
         return decks.get(cardType).get();
